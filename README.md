@@ -1,4 +1,4 @@
-# CentOS Linux Server OS Preparation Lib
-This is used by os_preparation.
+# Ubuntu Linux Server OS Preparation Lib
+This is used by ubuntu_preparation.
 Please reference:
-https://github.com/charlietag/os_preparation.git
+https://github.com/charlietag/ubuntu_preparation.git

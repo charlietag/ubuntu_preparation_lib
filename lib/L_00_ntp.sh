@@ -5,10 +5,14 @@ L_NTP_DATETIME() {
   echo "---------------------------------------------------"
   echo "NTP(chrony) ---> pool.ntp.org"
   echo "---------------------------------------------------"
-  rpm --quiet -q chrony || $REPO_EXEC_CMD install -y chrony
+  dpkg -l chrony 2>/dev/null >/dev/null || apt install -y chrony
   # make sure chronyd stop first , before syncing time using chronyd command!
-  systemctl stop chronyd
-  systemctl disable chronyd
+  # in ubuntu chronyd.service is an alias of chron.service
+  # systemctl stop chronyd
+  # systemctl disable chronyd
+
+  systemctl stop chrony
+  systemctl disable chrony
 
   echo "RUN: chronyd -q 'pool pool.ntp.org iburst'"
   chronyd -q 'pool pool.ntp.org iburst'

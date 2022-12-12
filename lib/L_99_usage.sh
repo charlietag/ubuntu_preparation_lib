@@ -24,13 +24,13 @@ L_IF_FUNC_EXISTS (){
   echo "${l_argvs[@]}"
 }
 
-L_RUN_DNF_REPO_UPDATE (){
+L_RUN_APT_REPO_UPDATE (){
   local l_argvs_uniqs=($@)
 
   # --- update repo if needed ---
 
   # Prepare var
-  local l_do_dnf_repo_update
+  local l_do_apt_repo_update
   local l_argvs_uniq_str
 
   # Combine string
@@ -39,15 +39,14 @@ L_RUN_DNF_REPO_UPDATE (){
     local l_argvs_uniq_script="${FUNCTIONS}/${l_argvs_uniq}.sh"
     l_argvs_uniq_str="${l_argvs_uniq_str} ${l_argvs_uniq_script}"
   done
- 
-  # Find which function is using dnf
+
+  # Find which function is using apt
   if [[ -n "$(echo "${l_argvs_uniq_str}" | sed 's/ //g')" ]]; then
-    #l_do_dnf_repo_update="$(grep -E "^\s*${REPO_EXEC_CMD}" ${l_argvs_uniq_str})"
-    l_do_dnf_repo_update="$(grep -E "^[^#]*${REPO_EXEC_CMD}" ${l_argvs_uniq_str})"
+    l_do_apt_repo_update="$(grep -E "^[^#]*apt" ${l_argvs_uniq_str})"
   fi
 
-  # Update dnf repo
-  if [[ -n "${l_do_dnf_repo_update}" ]]; then
+  # Update apt repo
+  if [[ -n "${l_do_apt_repo_update}" ]]; then
     # Default -> retry : 5000
     #L_UPDATE_REPO 5000
     L_UPDATE_REPO
@@ -62,7 +61,7 @@ L_RUN (){
   L_NTP_DATETIME
 
   # --- update repo if needed ---
-  L_RUN_DNF_REPO_UPDATE ${l_argvs_uniqs[@]}
+  L_RUN_APT_REPO_UPDATE ${l_argvs_uniqs[@]}
 
   # --- exec function ---
   for l_argvs_uniq in ${l_argvs_uniqs[@]}
@@ -84,12 +83,6 @@ L_RUN_SPECIFIED_FUNC (){
   fi
 }
 
-
-# ----------------------------------------------------------------------------------
-#                   yum/dnf cache never expire
-# ----------------------------------------------------------------------------------
-#L_STOP_EXPIRING_REPO_CACHE
-# ----------------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------------------
 # Actions
