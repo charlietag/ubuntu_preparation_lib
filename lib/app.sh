@@ -14,7 +14,7 @@ LIB="${OS_PRE_LIB}/lib"
 #------------------------------------------------------------------------------------------------------------
 # do something here
 # --- make sure this is for ubuntu only ---
-IS_UBUNTU="$(cat ${OS_RELEASE_VER} | grep -i "ubuntu")"
+IS_UBUNTU="$(echo ${OS_RELEASE_VER} | grep -i "ubuntu")"
 if [[ -z "${IS_UBUNTU}" ]]; then
   echo "Make sure run this preparation under OS \"Ubuntu\""
   exit
