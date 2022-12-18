@@ -1,7 +1,8 @@
 #------------------------------------
 # Define params
 #------------------------------------
-OS_RELEASE_VER="$(cat /etc/os-release |grep -i pretty_name | cut -d'"' -f2 | grep -Eo "[[:print:]]+[[:digit:]\.]+")"
+OS_NAME="$(cat /etc/os-release |grep -i pretty_name | cut -d'"' -f2 | grep -Eo "[[:print:]]+[[:digit:]\.]+")"
+# OS_RELEASE_VER="$(cat /etc/os-release  |grep -iE "^version_id" | grep -oE "[[:digit:]\.]+")"
 
 
 #------------------------------------
@@ -14,7 +15,7 @@ LIB="${OS_PRE_LIB}/lib"
 #------------------------------------------------------------------------------------------------------------
 # do something here
 # --- make sure this is for ubuntu only ---
-IS_UBUNTU="$(echo ${OS_RELEASE_VER} | grep -i "ubuntu")"
+IS_UBUNTU="$(echo ${OS_NAME} | grep -i "ubuntu")"
 if [[ -z "${IS_UBUNTU}" ]]; then
   echo "Make sure run this preparation under OS \"Ubuntu\""
   exit
