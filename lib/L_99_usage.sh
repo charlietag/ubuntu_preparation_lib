@@ -42,7 +42,8 @@ L_RUN_APT_REPO_UPDATE (){
 
   # Find which function is using apt
   if [[ -n "$(echo "${l_argvs_uniq_str}" | sed 's/ //g')" ]]; then
-    l_do_apt_repo_update="$(grep -E "^[^#]*apt" ${l_argvs_uniq_str})"
+    # l_do_apt_repo_update="$(grep -E "^[^#]*apt" ${l_argvs_uniq_str})"
+    l_do_apt_repo_update="$(grep -E "^(^#|[[:space:]])*apt" ${l_argvs_uniq_str})"
   fi
 
   # Update apt repo
