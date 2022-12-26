@@ -11,16 +11,26 @@ L_NTP_DATETIME() {
   # systemctl stop chronyd
   # systemctl disable chronyd
 
+  default_chrony_status="$(systemctl list-unit-files |grep chrony | grep service|grep enabled | head -n 1)"
+
   systemctl stop chrony
   systemctl disable chrony
 
   echo "RUN: chronyd -q 'pool pool.ntp.org iburst'"
-  chronyd -q 'pool pool.ntp.org iburst'
+
+  # https://chrony.tuxfamily.org/faq.html
+  # chronyd -q 'pool pool.ntp.org iburst'
+  chronyd -q -t 1 'server pool.ntp.org iburst maxsamples 1'
 
   echo "RUN: hwclock -w"
   hwclock -w
 
   echo "---------------------------------------------------"
   echo ""
+
+  if [[ -n "${default_chrony_status}" ]]; then
+    systemctl start chrony
+    systemctl enable chrony
+  fi
 
 }
