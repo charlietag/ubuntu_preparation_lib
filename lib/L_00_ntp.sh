@@ -9,7 +9,10 @@ L_NTP_DATETIME() {
   # Chrony
   # ------------------------------------
   if [[ -n "${if_chrony_found}" ]]; then
-    ntp_url="$(cat /etc/chrony/chrony.conf |grep -E "^pool" | head -n 1 | awk '{print $2}')"
+    ntp_url="$(cat /etc/chrony/chrony.conf /etc/chrony/conf.d/*.conf 2>/dev/null |grep -E "^pool" | head -n 1 | awk '{print $2}')"
+    if [[ -z "${ntp_url}" ]]; then
+      ntp_url="pool.ntp.org"
+    fi
     echo "---------------------------------------------------"
     echo "NTP(chrony) ---> ${ntp_url}"
     echo "---------------------------------------------------"
