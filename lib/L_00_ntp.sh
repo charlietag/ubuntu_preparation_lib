@@ -9,8 +9,9 @@ L_NTP_DATETIME() {
   # Chrony
   # ------------------------------------
   if [[ -n "${if_chrony_found}" ]]; then
+    ntp_url="$(cat /etc/chrony/chrony.conf |grep -E "^pool" | head -n 1 | awk '{print $2}')"
     echo "---------------------------------------------------"
-    echo "NTP(chrony) ---> pool.ntp.org"
+    echo "NTP(chrony) ---> ${ntp_url}"
     echo "---------------------------------------------------"
     # make sure chronyd stop first , before syncing time using chronyd command!
     # in ubuntu chronyd.service is an alias of chron.service
@@ -22,11 +23,11 @@ L_NTP_DATETIME() {
     systemctl stop chrony
     systemctl disable chrony
 
-    echo "RUN: chronyd -q 'pool pool.ntp.org iburst'"
+    echo "RUN: chronyd -q 'pool ${ntp_url} iburst'"
 
     # https://chrony.tuxfamily.org/faq.html
     # chronyd -q 'pool pool.ntp.org iburst'
-    chronyd -q -t 1 'server pool.ntp.org iburst maxsamples 1'
+    chronyd -q -t 1 "server ${ntp_url} iburst maxsamples 1"
 
     # echo "RUN: hwclock -w"
     # hwclock -w
