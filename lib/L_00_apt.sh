@@ -20,7 +20,7 @@ L_UPDATE_REPO() {
 
   for ((i=1; ; i++)); do
 
-    # ---------- Check DNF Repo Installation -----------
+    # ---------- Check APT Repo Installation -----------
     apt update
     local apt_repo_check=$?
     if [[ ${apt_repo_check} -eq 0 ]]; then
