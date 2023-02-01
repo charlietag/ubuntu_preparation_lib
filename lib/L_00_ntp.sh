@@ -21,7 +21,7 @@ L_NTP_DATETIME() {
     # systemctl stop chronyd
     # systemctl disable chronyd
 
-    if_chrony_default_enabled="$(systemctl list-unit-files |grep chrony | grep service|grep enabled | head -n 1)"
+    if_chrony_default_enabled="$(systemctl list-unit-files |grep -E "chrony[[:print:]]+service[[:space:]]+enabled" | head -n 1)"
 
     systemctl stop chrony
     systemctl disable chrony
